@@ -8,7 +8,7 @@ GENERATIONS = 10
 DEBUG = True
 CELL_SIZE = 15
 BORDER_WIDTH = 2
-BASE_COLOR = (0, 255, 0)  # Синий цвет по умолчанию
+BASE_COLOR = (0, 255, 0)  
 
 
 
@@ -194,14 +194,10 @@ def main():
             print(row)
         print(f"\nSimulating {generations} generations...\n")
 
-    # write_output(grid, OUTPUT_FILE_CSV, 0)
-    # write_png(grid, OUTPUT_FILE_PNG, 0, base_color)
-
     make_zeros_matrix(grid,age_of_cells)
     for generation in range(1, generations + 1):
         grid,age_of_cells = model_of_life(grid,age_of_cells)
 
-        # Сохраняем текущее состояние
         write_output(grid, OUTPUT_FILE_CSV, generation)
         write_png(grid, OUTPUT_FILE_PNG, generation,age_of_cells, base_color)
 
@@ -215,3 +211,4 @@ def main():
 
 
 main()
+
