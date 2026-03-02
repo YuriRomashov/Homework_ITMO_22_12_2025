@@ -9,8 +9,11 @@ PRODUCTS = ["Organic", "Bakedgoods", "Cheese", "Crafts", "Flowers", "Eggs", "Sea
 PAYMENTS = ["Credit","WIC","WICcash","SFMNP","SNAP"]
 LIMIT_PAGES_ON_SCREEN = 10
 
-def print_command_starter():
+def print_command_starter_without_user():
     print("Command  => \n 1.Registration\n 2.Login\n 3.View markets\n 4.End")
+
+def print_command_starter_with_user():
+    print("Command  => \n 1.Registration\n 2.Logout\n 3.View markets\n 4.End")
 
 def print_index_out_of_range():
     print("Index out of range, try again\n")
@@ -64,6 +67,45 @@ def print_commands_in_info_market():
 def print_finished():
     print("Finish\n ")
 
+def print_username():
+    print("Enter a username containing only (letters from A to Z and numbers from 0 to 9)\n")
+
+def print_password():
+    print("Enter a pasword. Not allowed signs '({[|`¬¦!«£$%^&*»<>:;#~_-+=,@'.\n")
+
+def print_username_error():
+    print("Enter a username containing not only letters from A to Z and numbers from 0 to 9\n")
+
+def print_password_pass():
+    print("Password pass")
+
+def print_password_not_pass():
+    print("Password not pass")
+
+def print_registration_ended():
+    print(f"Registration is finished succesfull!")
+
+def print_registration_error(username):
+    print(f"Error: User named '{username}' already exists! Try again.\n")
+
+def print_username_login():
+    print("Enter your username:\n")
+
+def print_password_login():
+    print("Enter your password:\n")
+
+def print_authenticate(code):
+    if code == 0:
+        print("Welcome you're logged in!\n")
+    elif code == 1:
+        print("Error: 'users_info.csv' not found.\n")
+    elif code == 2:
+        print("Error: Incorrect password.\n")
+    else:
+        print("Error: User not found.\n")
+        
+def print_logout():
+    print("LogOut from user.\n")
+    
 def print_unknown_command():
     print("Unknown command try again\n")
-# ('Registration','Login','loc', 'zip', 'dist', 'end')
