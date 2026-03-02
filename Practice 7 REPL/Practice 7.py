@@ -1,6 +1,9 @@
 import zip_util,math
 import numpy as np
 import view_console as view
+import zip_users 
+import re
+import getpass
 
 # 0 - FMID, 1 - MarketName,
 # 2 - Website, 3 - Facebook, 4 - Twitter, 5 - Youtube, 6 - OtherMedia,
@@ -17,7 +20,8 @@ import view_console as view
 # 48 - Trees, 49 - Wine, 50 - Coffee, 51 - Beans,
 # 52 - Fruits, 53 - Grains, 54 - Juices, 55 - Mushrooms,
 # 56 - PetFood, 57 - Tofu, 58 - WildHarvested, 59 - updateTime
-
+FILE_USERS_PATH = 'users_info.csv'
+FORBIDDEN_PATTERN = r'[(){}[\]|`¬¦!«£$%^&*»<>:;#~_\-+=,@]'
 """
     decompositon in 6 lists (with str type with extension: x,y):
 
@@ -30,7 +34,7 @@ import view_console as view
                         10 - Maple, 11 - Meat, 12 - Nursery, 13 - Nuts, 14 - Plants, 15 - Poultry, 16 - Prepared, 17 - Soap, 18 - Trees, 19 - Wine, 20 - Coffee, 21 - Beans,
                         22 - Fruits, 23 - Grains, 24 - Juices, 25 - Mushrooms, 26 - PetFood, 27 - Tofu, 28 - WildHarvested
 """
-3
+
 def limited_of_markets_page(request,limited_ids,page):
     if request + page*10>limited_ids or request<0:
         return 0,True
@@ -42,6 +46,40 @@ def limit_pages(lenght):
         return lenght//10      
     else:
         return int(lenght/10)
+    
+def registration():
+    view.print_username()
+    user_name = input()
+    if re.search(FORBIDDEN_PATTERN, user_name):
+        view.print_username_error()
+        return        
+    else:
+        pass
+    
+    view.print_password()
+    user_pass = getpass.getpass()
+    if re.search(FORBIDDEN_PATTERN, user_pass):
+        view.print_password_not_pass()
+        return 
+    else:
+        pass
+    flag = zip_users.add_user_to_csv(FILE_USERS_PATH,user_name,user_pass,False)
+    if flag:
+        view.print_registration_ended()
+    else:
+        view.print_registration_error(user_name)
+
+def authentication():
+    view.print_username_login()
+    user_name = input()
+    view.print_password_login()
+    user_pass = getpass.getpass()
+    flag_log,flag_adm,error_code = zip_users.authenticate_user(FILE_USERS_PATH,user_name,user_pass)
+    view.print_authenticate(error_code)
+    if error_code == 0:
+        return flag_log,flag_adm
+    else:
+        return False,False
 
 def all_markets_view(FMID_codes,media_codes,location_codes,payment_codes,season_codes,products_codes,limited_ids,limited_pages):
     page = 0 
@@ -118,8 +156,14 @@ limited_ids = len(FMID_codes)
 limited_pages = limit_pages(len(FMID_codes))
 # print(limited_pages,limited_ids)
 Flag_end = False
+flag_user_registration = False
+flag_login = False
+flag_user_admin = False
 while not Flag_end:
-    view.print_command_starter()
+    if flag_login:
+        view.print_command_starter_with_user()
+    else:
+        view.print_command_starter_without_user()
     request = input()
     if request == "4":
         view.print_finished()
@@ -129,7 +173,24 @@ while not Flag_end:
         # zip_code = input()
         # print(zip_code)
         # location_from_zip_code(numpy_zip_codes,zip_code)
-    # elif request == "zip":
+    elif request == "1":
+        registration()
+        # view.print_username()
+        # user_name = input()
+        # view.print_password_pass()
+        # user_pass = input()
+        # flag_user_registration = zip_users.add_user_to_csv(FILE_USERS_PATH,)
+        # if flag_user_registration:
+        #     view.print_registration_ended()
+        # else:
+        #     view.print_registration_error(user_name)
+    elif request == "2":
+        if flag_login:
+            flag_login = False
+            flag_user_admin = False
+            view.print_logout()
+        else:
+            flag_login,flag_user_admin = authentication()
     #     print(request)
     #     city_name = input("Enter a city name to lookup => ")
     #     print(city_name)
