@@ -97,14 +97,19 @@ def read_market_all():
                     val = False
                 else:
                     val = m_[idx]
+                if type(val)==str and val[-1:]==" ":
+                    val = val[:-1]
+                if type(val)==str and val.startswith(" "):
+                    val = val[1:]
                 data.append(val)           
             codes.append(data)
     codes.pop(len(codes)-1)
-    return decomposition(codes)
+    return codes
 
 
 if __name__ == "__main__":
-    FMID_codes,media_codes,location_codes,payment_codes,season_codes,products_codes = read_market_all()
+    all_info = read_market_all()
+    FMID_codes,media_codes,location_codes,payment_codes,season_codes,products_codes = decomposition(all_info)
     print(FMID_codes)
     # assert len(zip_codes) == 42049, \
     #     f'The number of ZIP codes read is {len(zip_codes)} instead of 42049'
