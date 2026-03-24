@@ -220,7 +220,7 @@ class RatPoly:
         """Производим деление полиномов только если один из полиномов 0 степени """
         if other.degree() == 0:
             return self.scale_coeff(RatNum(1) / other.get_coeff(0))
-        return RatPoly("NaN") # В рамках базовой АСД
+        return RatPoly("NaN")
 
     def eval(self, x):
         """Вычисляем значение P(x). Входное значение должно быть RatNum"""
